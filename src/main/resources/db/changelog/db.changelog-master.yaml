@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/db.changelog-create-table-users.xml
+  - include:
+      file: db/changelog/db.changelog-insert-table-users.xml
