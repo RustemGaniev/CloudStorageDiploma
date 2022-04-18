@@ -1,6 +1,7 @@
 package ru.netology.cloudstorage.security;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,11 +13,12 @@ import ru.netology.cloudstorage.repository.UserRepository;
 import java.util.Collections;
 import java.util.Optional;
 
-@Slf4j
 @Component
 public class MyUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepo;
+
+    private final Logger log = LoggerFactory.getLogger(MyUserDetailsService.class);
 
     public MyUserDetailsService(UserRepository userRepo) {
         this.userRepo = userRepo;
