@@ -1,14 +1,13 @@
 package ru.netology.cloudstorage.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.netology.cloudstorage.exception_handling.UserAuthenticationException;
 import ru.netology.cloudstorage.dto.LoginDTO;
+import ru.netology.cloudstorage.exception_handling.UserAuthenticationException;
 import ru.netology.cloudstorage.security.JWTUtil;
 
 import java.util.Collections;
