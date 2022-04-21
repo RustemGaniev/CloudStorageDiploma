@@ -6,6 +6,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import ru.netology.cloudstorage.security.JWTFilter;
 import ru.netology.cloudstorage.security.JWTUtil;
 
+/**
+ * @author VladSemikin
+ */
+
 @Configuration
 public class CloudStorageConfiguration {
 

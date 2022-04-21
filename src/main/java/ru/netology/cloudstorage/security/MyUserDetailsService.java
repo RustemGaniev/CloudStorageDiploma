@@ -13,6 +13,9 @@ import ru.netology.cloudstorage.repository.UserRepository;
 import java.util.Collections;
 import java.util.Optional;
 
+/**
+ * @author VladSemikin
+ */
 @Component
 public class MyUserDetailsService implements UserDetailsService {
 

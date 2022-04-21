@@ -21,6 +21,10 @@ import java.util.List;
 
 import static java.util.Collections.singletonList;
 
+/**
+ * @author VladSemikin
+ */
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -42,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 anyRequest().authenticated().and().
 
                 exceptionHandling().authenticationEntryPoint((request, response, authException) ->
-                        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad credentials")).
+                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized error")).
                 and().sessionManagement()
 
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

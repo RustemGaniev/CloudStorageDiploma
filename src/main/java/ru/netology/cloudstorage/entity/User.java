@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 
+/**
+ * @author VladSemikin
+ */
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -21,6 +25,7 @@ public class User {
 
     @Column(name = "enabled")
     private Boolean enabled;
+
 
     public User(String login, String password, String authority, Boolean enabled) {
         this.login = login;
@@ -48,19 +53,19 @@ public class User {
         this.password = password;
     }
 
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
     public String getAuthority() {
         return authority;
     }
 
     public void setAuthority(String authority) {
         this.authority = authority;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }

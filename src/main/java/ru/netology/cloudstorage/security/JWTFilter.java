@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @author VladSemikin
+ */
 public class JWTFilter extends GenericFilterBean {
 
     private final JWTUtil jwtUtil;

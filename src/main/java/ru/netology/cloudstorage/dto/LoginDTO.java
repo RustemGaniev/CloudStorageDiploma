@@ -1,5 +1,9 @@
 package ru.netology.cloudstorage.dto;
 
+/**
+ * @author VladSemikin
+ */
+
 public class LoginDTO {
 
     private String login;

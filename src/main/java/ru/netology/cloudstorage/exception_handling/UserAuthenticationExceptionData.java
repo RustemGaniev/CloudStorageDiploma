@@ -1,5 +1,9 @@
 package ru.netology.cloudstorage.exception_handling;
 
+/**
+ * @author VladSemikin
+ */
+
 public class UserAuthenticationExceptionData {
     private String info;
 

@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.netology.cloudstorage.exception_handling.UserAuthenticationException;
 import ru.netology.cloudstorage.exception_handling.UserAuthenticationExceptionData;
 
+/**
+ * @author VladSemikin
+ */
+
 @RestControllerAdvice
 public class AuthenticationExceptionControllerAdvice {
 

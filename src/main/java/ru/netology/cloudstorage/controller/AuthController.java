@@ -13,6 +13,10 @@ import ru.netology.cloudstorage.security.JWTUtil;
 import java.util.Collections;
 import java.util.Map;
 
+/**
+ * @author VladSemikin
+ */
+
 @RestController
 public class AuthController {
 

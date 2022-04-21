@@ -13,6 +13,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
+/**
+ * @author VladSemikin
+ */
 public class JWTUtil {
 
     @Value("${jwt.token.secret}")
@@ -57,7 +60,7 @@ public class JWTUtil {
     }
 
     public String resolveToken(HttpServletRequest req) {
-        String bearerToken = req.getHeader("Authorization");
+        String bearerToken = req.getHeader("auth-token");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="0.4" author="vladsemikin3@gmail.com">
+        <createTable tableName="files">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="content_type" type="varchar(255)"/>
+            <column name="data" type="oid"/>
+            <column name="name" type="varchar(255)"/>
+            <column name="size" type="bigint"/>
+            <column name="login" type="varchar(100)"/>
+
+        </createTable>
+        <addForeignKeyConstraint baseTableName="files" baseColumnNames="login" constraintName="login"
+                                 referencedTableName="users" referencedColumnNames="login"/>
+    </changeSet>
+</databaseChangeLog>
