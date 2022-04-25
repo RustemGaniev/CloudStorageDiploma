@@ -24,7 +24,7 @@ public class JWTUtil {
     @Value("${jwt.token.expired}")
     private long validityInMilliseconds;
 
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     public JWTUtil(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
