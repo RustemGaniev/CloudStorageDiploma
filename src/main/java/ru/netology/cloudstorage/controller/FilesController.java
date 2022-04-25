@@ -86,7 +86,6 @@ public class FilesController {
             return ResponseEntity.notFound()
                     .build();
         }
-
         File fileEntity = fileOptional.get();
         log.info("File download successfully: {}", filename);
         return ResponseEntity.ok()

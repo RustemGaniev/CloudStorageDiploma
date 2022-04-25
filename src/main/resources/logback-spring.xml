@@ -37,7 +37,7 @@
         <appender-ref ref="Console" />
     </root>
 
-    <logger name="ru.netology.cloudstorage" level="trace" additivity="false">
+    <logger name="ru.netology.cloudstorage" level="info" additivity="false">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
     </logger>

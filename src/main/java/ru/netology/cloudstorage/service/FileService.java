@@ -1,5 +1,7 @@
 package ru.netology.cloudstorage.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -7,6 +9,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import ru.netology.cloudstorage.entity.File;
 import ru.netology.cloudstorage.entity.User;
+import ru.netology.cloudstorage.gzip.GzipUtils;
 import ru.netology.cloudstorage.repository.FileRepository;
 import ru.netology.cloudstorage.repository.UserRepository;
 
@@ -26,23 +29,29 @@ public class FileService {
 
     private final UserRepository userRepository;
 
+    private final Logger log = LoggerFactory.getLogger(FileService.class);
+
     public FileService(FileRepository fileRepository, UserRepository userRepository) {
         this.userRepository = userRepository;
         this.fileRepository = fileRepository;
     }
 
-    public void save(MultipartFile file) throws IOException {
-        File fileEntity = new File();
-        fileEntity.setName(StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename())));
-        fileEntity.setContentType(file.getContentType());
-        fileEntity.setData(file.getBytes());
-        fileEntity.setSize(file.getSize());
-        fileEntity.setUser(getCurrentUser());
+    public void save(MultipartFile file) {
+        try {
+            File fileEntity = new File();
+            fileEntity.setName(StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename())));
+            fileEntity.setContentType(file.getContentType());
+            fileEntity.setData(GzipUtils.gzipCompress(file.getBytes()));
+            fileEntity.setSize(file.getSize());
+            fileEntity.setUser(getCurrentUser());
 
-        fileRepository.save(fileEntity);
+            fileRepository.save(fileEntity);
+        } catch (IOException e) {
+            log.error("Error exception by save {}", e.getMessage());
+        }
     }
 
-    public User getCurrentUser(){
+    public User getCurrentUser() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         String username = userDetails.getUsername();
@@ -52,7 +61,14 @@ public class FileService {
 
     @Transactional
     public Optional<File> findByName(String name) {
-        return fileRepository.findByName(name);
+        Optional<File> getFile = fileRepository.findByName(name);
+        if (getFile.isPresent()) {
+            if (!GzipUtils.isGZIPStream(getFile.get().getData())) {
+                return getFile;
+            }
+            getFile.get().setData(GzipUtils.gzipUncompress(getFile.get().getData()));
+        }
+        return getFile;
     }
 
     @Transactional
@@ -67,10 +83,10 @@ public class FileService {
 
     @Transactional
     public void updateFile(String name, String newName) {
-        Optional<File> file = fileRepository.findByName(name);
-        if (file.isPresent()) {
-            file.get().setName(newName);
-            fileRepository.save(file.get());
+        Optional<File> getFile = fileRepository.findByName(name);
+        if (getFile.isPresent()) {
+            getFile.get().setName(newName);
+            fileRepository.save(getFile.get());
         }
     }
 }

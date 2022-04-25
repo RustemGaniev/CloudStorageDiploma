@@ -25,11 +25,10 @@ public class File {
     @Column(name = "size")
     private Long size;
 
-    @Lob
     @Column(name = "data", columnDefinition = "clob")
     private byte[] data;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "login")
     private User user;
 
