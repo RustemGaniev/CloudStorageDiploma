@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <property name="LOGS" value="./logs" />
+    <property name="LOGS" value="./logs"/>
 
-    <appender name="Console"
+    <appender name="STDOUT"
               class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
             <Pattern>
@@ -12,9 +12,21 @@
         </layout>
     </appender>
 
-    <appender name="RollingFile"
+    <property name="LOGS" value="/var/log/cloudStorageApplication"/>
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS}/spring-boot-logger-error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOGS}/archived/error.%d{"yyyy-MM-dd-HH" GMT}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="INFO_FILE"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOGS}/spring-boot-logger.log</file>
+        <file>${LOGS}/spring-boot-logger-info.log</file>
         <encoder
                 class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
@@ -23,7 +35,7 @@
         <rollingPolicy
                 class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- rollover daily and when the file reaches 10 MegaBytes -->
-            <fileNamePattern>${LOGS}/archived/spring-boot-logger-%d{yyyy-MM-dd}.%i.log
+            <fileNamePattern>${LOGS}/archived/spring-boot-logger-%d{"yyyy-MM-dd-HH" GMT}.%i.log
             </fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -32,14 +44,31 @@
         </rollingPolicy>
     </appender>
 
-    <root level="info">
-        <appender-ref ref="RollingFile" />
-        <appender-ref ref="Console" />
-    </root>
+    <springProfile name="dev">
+        <root level="info">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="INFO_FILE"/>
+        </root>
+        <logger name="ru.netology.cloudstorage" additivity="false" level="debug">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="INFO_FILE"/>
+        </logger>
+        <logger name="ru.netology.cloudstorage" additivity="false" level="error">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="ERROR_FILE"/>
+        </logger>
+    </springProfile>
 
-    <logger name="ru.netology.cloudstorage" level="info" additivity="false">
-        <appender-ref ref="RollingFile" />
-        <appender-ref ref="Console" />
-    </logger>
+    <springProfile name="prod">
+        <root level="info">
+            <appender-ref ref="INFO_FILE"/>
+        </root>
+        <logger name="ru.netology.cloudstorage" additivity="false" level="info">
+            <appender-ref ref="INFO_FILE"/>
+        </logger>
+        <logger name="ru.netology.cloudstorage" additivity="false" level="error">
+            <appender-ref ref="ERROR_FILE"/>
+        </logger>
+    </springProfile>
 
 </configuration>
