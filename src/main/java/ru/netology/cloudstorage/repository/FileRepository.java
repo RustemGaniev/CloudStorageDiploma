@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface FileRepository extends JpaRepository<File, String> {
     void deleteByName(String name);
 
-    Optional<File> findByName(String name);
+    Optional<File> findByNameAndUser(String name, User user);
 
     List<File> findAllByUser (User user);
 }

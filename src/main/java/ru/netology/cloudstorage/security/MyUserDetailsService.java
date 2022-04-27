@@ -3,6 +3,7 @@ package ru.netology.cloudstorage.security;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,6 +28,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+
         Optional<User> userRes = userRepo.findByLogin(login);
 
         if (userRes.isEmpty()) {
@@ -38,5 +40,16 @@ public class MyUserDetailsService implements UserDetailsService {
                 login,
                 user.getPassword(),
                 Collections.singletonList(new SimpleGrantedAuthority(user.getAuthority())));
+    }
+
+    public static User getCurrentUser() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        User user = new User();
+        user.setAuthority(String.valueOf(userDetails.getAuthorities()));
+        user.setEnabled(userDetails.isEnabled());
+        user.setPassword(userDetails.getPassword());
+        user.setLogin(userDetails.getUsername());
+        return user;
     }
 }

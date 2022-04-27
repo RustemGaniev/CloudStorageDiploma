@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.netology.cloudstorage.dto.FileDTO;
 import ru.netology.cloudstorage.entity.File;
+import ru.netology.cloudstorage.security.MyUserDetailsService;
 import ru.netology.cloudstorage.service.FileService;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class FilesController {
 
     @GetMapping("/list")
     public List<FileDTO> listFile(@RequestParam String limit) {
-        return fileService.findAllByUser(fileService.getCurrentUser())
+        return fileService.findAllByUser(MyUserDetailsService.getCurrentUser())
                 .stream()
                 .map(this::mapToFileResponse)
                 .limit(Long.parseLong(limit))
@@ -98,7 +99,6 @@ public class FilesController {
     @PutMapping("/file")
     public ResponseEntity<String> updateFile(@RequestParam String filename, @RequestBody FileDTO name) {
         try {
-
             fileService.updateFile(filename, name.getFilename());
 
             log.info("File update successfully: {}", name.getFilename());
