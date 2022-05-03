@@ -64,7 +64,7 @@ public class FileService {
     }
 
     @Transactional
-    public void deleteFile(String name) {
+    public void deleteFileByName(String name) {
         fileRepository.deleteByName(name);
     }
 

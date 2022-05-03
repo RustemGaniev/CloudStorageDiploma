@@ -67,7 +67,7 @@ public class FileController {
     @DeleteMapping("/file")
     public ResponseEntity<String> deleteFile(@RequestParam String filename) {
         try {
-            fileService.deleteFile(filename);
+            fileService.deleteFileByName(filename);
 
             log.info("File deleted successfully: {}", filename);
             return ResponseEntity.status(HttpStatus.OK)
