@@ -22,13 +22,13 @@ import java.util.stream.Collectors;
  */
 
 @RestController
-public class FilesController {
+public class FileController {
 
     private final FileService fileService;
 
-    private final Logger log = LoggerFactory.getLogger(FilesController.class);
+    private final Logger log = LoggerFactory.getLogger(FileController.class);
 
-    public FilesController(FileService fileService) {
+    public FileController(FileService fileService) {
         this.fileService = fileService;
     }
 

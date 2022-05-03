@@ -45,11 +45,12 @@ public class MyUserDetailsService implements UserDetailsService {
     public static User getCurrentUser() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
-        User user = new User();
-        user.setAuthority(String.valueOf(userDetails.getAuthorities()));
-        user.setEnabled(userDetails.isEnabled());
-        user.setPassword(userDetails.getPassword());
-        user.setLogin(userDetails.getUsername());
-        return user;
+
+        return new User.Builder()
+                .withLogin(userDetails.getUsername())
+                .withAuthority(String.valueOf(userDetails.getAuthorities()))
+                .withPassword(userDetails.getPassword())
+                .withEnabled(userDetails.isEnabled())
+                .build();
     }
 }

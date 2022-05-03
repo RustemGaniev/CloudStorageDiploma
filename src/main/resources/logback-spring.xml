@@ -12,7 +12,7 @@
         </layout>
     </appender>
 
-    <property name="LOGS" value="/var/log/cloudStorageApplication"/>
+    <property name="LOGS" value="/home/vladskn/var/log/cloudStorageApplication"/>
     <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOGS}/spring-boot-logger-error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">

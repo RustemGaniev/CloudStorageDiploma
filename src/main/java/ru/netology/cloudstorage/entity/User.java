@@ -2,7 +2,10 @@ package ru.netology.cloudstorage.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * @author VladSemikin
@@ -67,5 +70,37 @@ public class User {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public static class Builder {
+        private final User newUser;
+
+        public Builder() {
+            newUser = new User();
+        }
+
+        public Builder withLogin(String login) {
+            newUser.login = login;
+            return this;
+        }
+
+        public Builder withPassword(String password) {
+            newUser.password = password;
+            return this;
+        }
+
+        public Builder withAuthority(String authority) {
+            newUser.authority = authority;
+            return this;
+        }
+
+        public Builder withEnabled(boolean enabled) {
+            newUser.enabled = enabled;
+            return this;
+        }
+
+        public User build() {
+            return newUser;
+        }
     }
 }
