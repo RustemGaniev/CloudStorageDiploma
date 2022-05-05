@@ -1,5 +1,6 @@
 package ru.netology.cloudstorage.security;
 
+import org.junit.ClassRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -30,10 +32,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class JWTUtilTestIT {
 
 
+//    private final PostgreSQLContainer<?> POSTGRESQL_CONTAINER =
+//            new PostgreSQLContainer<>("postgres:13.3")
+//                    .withDatabaseName("postgres")
+//                    .withPassword("postgres")
+//                    .withUsername("postgres")
+//                    .withExposedPorts(5432)
+//                    .withInitScript("db.sql");
     @Container
-    private final PostgreSQLContainer<?> POSTGRESQL_CONTAINER =
-            new PostgreSQLContainer<>("postgres:13.3")
-                    .withInitScript("db.sql");
+    public static GenericContainer<?> restApp = new GenericContainer<>("postgres:13.3")
+            .withExposedPorts(5432);
 
     @Autowired
     private UserRepository userRepository;
@@ -51,7 +59,7 @@ class JWTUtilTestIT {
 
     @BeforeEach
     void setRestApp() {
-        POSTGRESQL_CONTAINER.start();
+        restApp.start();
         generateToken = jwtUtil.generateToken(userName);
     }
 
