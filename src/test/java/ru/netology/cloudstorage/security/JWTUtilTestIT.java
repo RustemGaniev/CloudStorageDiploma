@@ -7,17 +7,24 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 import ru.netology.cloudstorage.CloudStorageApplication;
 import ru.netology.cloudstorage.repository.UserRepository;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -31,16 +38,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class JWTUtilTestIT {
 
 
-    //    private final PostgreSQLContainer<?> POSTGRESQL_CONTAINER =
-//            new PostgreSQLContainer<>("postgres:13.3")
-//                    .withDatabaseName("postgres")
-//                    .withPassword("postgres")
-//                    .withUsername("postgres")
-//                    .withExposedPorts(5432)
-//                    .withInitScript("db.sql");
     @Container
-    public static GenericContainer<?> restApp = new GenericContainer<>("postgres:13.3")
-            .withExposedPorts(5432);
+    static final PostgreSQLContainer<?> container = new PostgreSQLContainer<>(DockerImageName.parse(
+            "postgres:13.3"))
+            .withExposedPorts(5432)
+            .withDatabaseName("postgres")
+            .withUsername("postgres")
+            .withPassword("postgres");
+//            .withInitScript("classpath:db.sql");
+
 
     @Autowired
     private UserRepository userRepository;
@@ -55,11 +61,14 @@ class JWTUtilTestIT {
 
     private final String userName = "user";
 
-
     @BeforeEach
     void setRestApp() {
-        restApp.start();
         generateToken = jwtUtil.generateToken(userName);
+    }
+
+    @Test
+    void test() {
+        assertTrue(container.isRunning());
     }
 
     @Test
