@@ -9,40 +9,40 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
-import ru.netology.cloudstorage.CloudStorageApplication;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK,
-        classes = CloudStorageApplication.class)
+@SpringBootTest
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
 @Testcontainers
-class JWTUtilTestIT {
-
+@Sql(value = {"/create-user-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(value = {"/create-user-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@ContextConfiguration(initializers = {JWTUtilTest.Initializer.class})
+class JWTUtilTest {
 
     @Container
-    static final PostgreSQLContainer<?> container = new PostgreSQLContainer<>(DockerImageName.parse(
-            "postgres:13.3"))
-            .withExposedPorts(5432, 5432)
+    static final PostgreSQLContainer<?> container = new PostgreSQLContainer<>
+            (DockerImageName.parse("postgres:13.3"))
+            .withExposedPorts(5432)
             .withDatabaseName("postgres")
             .withUsername("postgres")
             .withPassword("postgres");
-//            .withInitScript("classpath:db.sql");
-
-
-//    @Autowired
-//    private UserRepository userRepository;
 
     @Autowired
     private JWTUtil jwtUtil;
@@ -52,11 +52,22 @@ class JWTUtilTestIT {
 
     private String generateToken;
 
-    private final String userName = "user";
+    private final String USERNAME = "user";
+
+    static class Initializer
+            implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
+            TestPropertyValues.of(
+                    "spring.datasource.url=" + container.getJdbcUrl(),
+                    "spring.datasource.username=" + container.getUsername(),
+                    "spring.datasource.password=" + container.getPassword()
+            ).applyTo(configurableApplicationContext.getEnvironment());
+        }
+    }
 
     @BeforeEach
     void setRestApp() {
-        generateToken = jwtUtil.generateToken(userName);
+        generateToken = jwtUtil.generateToken(USERNAME);
     }
 
     @Test
@@ -76,14 +87,14 @@ class JWTUtilTestIT {
 
     @Test
     void getUsername() {
-        assertEquals(userName, jwtUtil.getUsername(generateToken));
+        assertEquals(USERNAME, jwtUtil.getUsername(generateToken));
     }
 
     @Test
     void getAuthentication() {
         Authentication authentication = jwtUtil.getAuthentication(generateToken);
         User user = (User) authentication.getPrincipal();
-        assertEquals(userName, user.getUsername());
+        assertEquals(USERNAME, user.getUsername());
     }
 
     @Test

@@ -1,16 +1,13 @@
 package ru.netology.cloudstorage.gzip;
 
 
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.core.IsEqual;
-import org.hamcrest.core.IsNot;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class GzipUtilsTest {
 
@@ -34,7 +31,7 @@ class GzipUtilsTest {
 
     @Test
     void gzipCompress() {
-        MatcherAssert.assertThat(bytes, IsNot.not(IsEqual.equalTo(gzipBytes)));
+        assertFalse(Arrays.equals(bytes, gzipBytes));
     }
 
     @Test
