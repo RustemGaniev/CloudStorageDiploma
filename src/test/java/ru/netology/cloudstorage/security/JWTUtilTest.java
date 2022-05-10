@@ -1,6 +1,5 @@
 package ru.netology.cloudstorage.security;
 
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,8 +30,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
 @Testcontainers
-@Sql(value = {"/create-user-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-@Sql(value = {"/create-user-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(value = {"/database-script/create-user-table-before.sql", "/database-script/create-user-before.sql"},
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(value = {"/database-script/create-user-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @ContextConfiguration(initializers = {JWTUtilTest.Initializer.class})
 class JWTUtilTest {
 
@@ -66,13 +66,8 @@ class JWTUtilTest {
     }
 
     @BeforeEach
-    void setRestApp() {
+    void setApp() {
         generateToken = jwtUtil.generateToken(USERNAME);
-    }
-
-    @Test
-    void test() {
-        assertTrue(container.isRunning());
     }
 
     @Test
