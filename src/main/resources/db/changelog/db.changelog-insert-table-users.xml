@@ -9,7 +9,7 @@
     <changeSet id="0.1" author="vladsemikin3@gmail.com">
         <comment>Inserting person records</comment>
         <insert tableName="users">
-            <column name="login" value="vladsemikin3@gmail.com"/>
+            <column name="login" value="user@gmail.com"/>
             <column name="password" value="$2a$10$OOSOqG8qAOz9uCkL4D19POOFvfxO/vbJzqNIheBuQYyGcsLWZbodi"/>
             <column name="authority" value="ROLE_ADMIN"/>
             <column name="enabled" value="1"/>
