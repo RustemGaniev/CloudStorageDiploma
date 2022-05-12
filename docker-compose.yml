@@ -32,4 +32,3 @@ services:
     image: "frontcloudstorage:latest"
     ports:
       - "8080:8080"
-      
