@@ -21,11 +21,6 @@ services:
       - db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/postgres?&useSSL=false&amp;serverTimezone=UTC
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=postgres
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
-      - JWT_TOKEN_SECRET=hanny
-      - JWT_TOKEN_EXPIRED=3600000
     ports:
       - "7878:7878"
   front:
