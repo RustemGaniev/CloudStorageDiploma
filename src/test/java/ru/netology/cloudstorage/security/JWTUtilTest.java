@@ -68,6 +68,7 @@ class JWTUtilTest {
     @BeforeEach
     void setApp() {
         generateToken = jwtUtil.generateToken(USERNAME);
+        System.gc();
     }
 
     @Test
