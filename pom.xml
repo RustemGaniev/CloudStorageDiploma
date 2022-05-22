@@ -15,7 +15,7 @@
     <description>CloudStorage</description>
     <properties>
         <java.version>11</java.version>
-        <testcontainers.version>1.16.2</testcontainers.version>
+        <testcontainers.version>1.16.3</testcontainers.version>
     </properties>
 
     <dependencies>
@@ -47,6 +47,7 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>postgresql</artifactId>
+            <version>1.16.3</version>
             <scope>test</scope>
         </dependency>
 

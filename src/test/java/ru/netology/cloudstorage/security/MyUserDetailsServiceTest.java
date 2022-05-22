@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * @author VladSemikin
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
